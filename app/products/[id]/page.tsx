@@ -44,7 +44,9 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
-      addItem(product);
+      if (product) {
+        addItem(product);
+      }
     };
 
   if (loading) {
