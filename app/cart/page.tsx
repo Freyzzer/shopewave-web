@@ -6,7 +6,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
-import HeroBanner from "@/components/hero-banner"
+
 
 export default function CarritoPage() {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCart()
