@@ -21,7 +21,7 @@ export default function CategoryList() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: { pageX: number; }) => {
     const slider = scrollRef.current;
     if (!slider) return;
     setIsDown(true);
@@ -37,7 +37,7 @@ export default function CategoryList() {
     setIsDown(false);
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: { preventDefault: () => void; pageX: number; }) => {
     if (!isDown) return;
     e.preventDefault();
     const slider = scrollRef.current;
