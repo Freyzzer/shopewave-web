@@ -30,7 +30,7 @@ export async function getProductByPercentageDiscount() {
         }
         // Filtrar productos con descuento
         const productsWithDiscount = data.products.filter(
-        product => product.discountPercentage > 13
+          (        product: { discountPercentage: number; }) => product.discountPercentage > 13
         );
         
         return productsWithDiscount;
