@@ -5,13 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
+import { Products } from "@/types/products";
 
 // DummyJSON endpoint
 const API_URL = "https://dummyjson.com/products/search";
 
 export default function AutocompleteSearch() {
   const [query, setQuery] = useState("");
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Products[]>([]);
   const [loading, setLoading] = useState(false);
   const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -32,7 +33,7 @@ export default function AutocompleteSearch() {
       let filtered = data.products;
 
       if (categoryFilters.length) {
-        filtered = filtered.filter((p: any) =>
+        filtered = filtered.filter((p: Products) =>
           categoryFilters.includes(p.category)
         );
       }
