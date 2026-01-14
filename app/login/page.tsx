@@ -33,6 +33,13 @@ export default function LoginPage() {
       <button className="w-full rounded bg-primary py-2 text-primary-foreground">
         Entrar
       </button>
+      <p>
+        La api no cuenta con registro de usuarios, por lo que puedes usar el siguiente usurio:
+        <br />
+        Usuario: <strong>emilys</strong>
+        <br />
+        Contraseña: <strong>emilyspass</strong>
+      </p>
     </form>
   );
 }

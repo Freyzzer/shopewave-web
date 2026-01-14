@@ -19,12 +19,7 @@ export default function Footer() {
             <li>
               <Link href="/products">Productos</Link>
             </li>
-            <li>
-              <Link href="/ofertas">Ofertas</Link>
-            </li>
-            <li>
-              <Link href="/categorias">Categorías</Link>
-            </li>
+
           </ul>
         </div>
 
@@ -32,18 +27,7 @@ export default function Footer() {
         <div>
           <h4 className="mb-4 text-sm font-semibold uppercase">Soporte</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <Link href="/contacto">Contacto</Link>
-            </li>
-            <li>
-              <Link href="/faq">Preguntas frecuentes</Link>
-            </li>
-            <li>
-              <Link href="/terminos">Términos y condiciones</Link>
-            </li>
-            <li>
-              <Link href="/privacidad">Política de privacidad</Link>
-            </li>
+
           </ul>
         </div>
 

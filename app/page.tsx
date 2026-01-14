@@ -1,6 +1,5 @@
 import {ButtonLink} from "@/components/button-link";
-import CarouselProduct from "@/components/carousel-products";
-import CategoryList from "@/components/category-list";
+
 import SectionProduct from "@/components/section-product";
 import Image from "next/image";
 
@@ -13,7 +12,7 @@ export default  function Home() {
           <section className=" group text-4xl font-bold text-[#494049]">
             <h2 className="">Grab Up to 50% off on</h2>
             <h2 className="">Select Product</h2>
-            <ButtonLink title="Shop Now" link="/productos" />
+            <ButtonLink title="Shop Now" />
           </section>
           <Image
             src="/ilustra_shop.svg"

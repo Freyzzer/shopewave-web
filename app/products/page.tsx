@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Loader2, ChevronRight, ChevronLeft } from "lucide-react";
 import ProductCard from "@/components/product-card";
 import { CategoryItem, ProductFiltersState, Products } from "@/types/products";
-// import { CategoryItem, ProductFilters, ProductFiltersState } from "@/components/filter";
+
 import { getAllCategories } from "@/lib/services/productServices";
 import { API_URL, ITEMS_PER_PAGE } from "@/constant/constants";
 import { ProductFilters } from "@/components/filter";

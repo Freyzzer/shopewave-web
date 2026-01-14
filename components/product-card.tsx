@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Card, CardDescription, CardTitle } from "./ui/card";
 import { Products } from "@/types/products";
 import { Star, ShoppingCart, Check } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { useRouter } from "next/navigation";
 

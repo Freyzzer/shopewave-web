@@ -58,7 +58,7 @@ export default function CarritoPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between mb-2">
                           <Link href={`/products/${item.id}`}>
-                            <h3 className="font-medium text-base hover:text-primary transition-colors">{item.title}</h3>
+                            <h3 className="font-medium text-base hover:text-primary transition-colors max-sm:text-sm">{item.title}</h3>
                           </Link>
                           <Button
                             variant="ghost"
@@ -72,7 +72,7 @@ export default function CarritoPage() {
 
                         <p className="text-sm text-muted-foreground mb-4">${item.price}</p>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 max-sm:flex-col max-sm:items-start">
                           <div className="flex items-center border rounded-md">
                             <Button
                               variant="ghost"

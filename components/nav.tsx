@@ -21,9 +21,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Button } from "./ui/button";
+
 import { useState } from "react";
 import { Card, CardContent } from "./ui/card";
+
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -113,19 +114,6 @@ export default function Navbar() {
               )}
             </section>
           </section>
-
-          {/* Mobile cart icon */}
-          <Link className="md:hidden max-md:hidden" href="/cart">
-            <ShoppingCartIcon className="h-6 w-6 text-gray-700" />
-            {cartCount > 0 && (
-              <Badge
-                variant="default"
-                className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center"
-              >
-                {cartCount}
-              </Badge>
-            )}
-          </Link>
         </article>
       </nav>
 

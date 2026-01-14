@@ -7,8 +7,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import { ProductFiltersState, CategoryItem } from "@/types/products";
+import AutocompleteSearch from "./search";
 
 
 interface ProductFiltersProps {
@@ -33,10 +34,10 @@ export function ProductFilters({
   };
 
   const FiltersContent = (
-    <Card className=" border-none shadow-nones">
+    <Card className=" border-none shadow-none">
       <CardContent className="space-y-5 p-4">
         <p className="font-semibold text-lg">Filtros</p>
-
+        <AutocompleteSearch />
         {/* Categorías */}
         <div>
           <p className="mb-2 text-sm font-medium">Categorías</p>
@@ -141,9 +142,7 @@ export function ProductFilters({
             side="right"
             className="w-full sm:w-full p-0"
           >
-            <SheetHeader className="p-4">
-              <SheetTitle>Filtros</SheetTitle>
-            </SheetHeader>
+
             <div className="overflow-y-auto h-full">
               {FiltersContent}
             </div>
@@ -153,7 +152,7 @@ export function ProductFilters({
 
       {/* DESKTOP */}
       <div className="hidden lg:block w-full">
-        <Card>{FiltersContent}</Card>
+        <Card className="border-0 shadow-none">{FiltersContent}</Card>
       </div>
     </>
   );

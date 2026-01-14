@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import CarouselProduct from "./carousel-products";
+
 import TextLink from "./text-link";
 import { getProductByPercentageDiscount, getRecentProducts, getTechProducts } from "@/lib/services/productServices";
 import { Products } from "@/types/products";
