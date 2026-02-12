@@ -1,8 +1,7 @@
 "use client";
 
-import { ShoppingCartIcon, User2Icon } from "lucide-react";
+import { ShoppingBag, User, Search, Menu, X, Home, Grid3X3, LogOut } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
-import { Badge } from "./ui/badge";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -10,6 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import AutocompleteSearch from "./search";
@@ -21,213 +21,220 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-
 import { useState } from "react";
-import { Card, CardContent } from "./ui/card";
-
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { items } = useCart();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>
-      <nav className="sticky w-full min-w-full ">
-        <article className="flex items-center justify-between py-3">
-          {/* Logo */}
-          <section className="flex gap-6 items-center ">
+      {/* Desktop Navigation */}
+      <nav
+        className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 lg:px-6">
+          {/* Logo + Nav Links */}
+          <div className="flex items-center gap-8">
             <Link
               href="/"
-              className="cursor-pointer text-2xl font-bold text-[#567e86]"
+              className="text-xl font-semibold tracking-tight text-foreground"
+              aria-label="ShopWave home"
             >
               ShopWave
             </Link>
-            <div className="max-md:hidden">
-              <ol className="flex font-semibold gap-4 text-gray-700 md:flex">
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li>
-                  <Link href="/products">Products</Link>
-                </li>
-              </ol>
+            <div className="hidden items-center gap-6 md:flex" role="menubar">
+              <Link
+                href="/"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                role="menuitem"
+              >
+                Home
+              </Link>
+              <Link
+                href="/products"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                role="menuitem"
+              >
+                Products
+              </Link>
             </div>
-          </section>
+          </div>
 
-          {/* Desktop menu */}
-          <section className="hidden md:flex items-center gap-6 max-md:hidden">
+          {/* Desktop Actions */}
+          <div className="hidden items-center gap-4 md:flex">
             <AutocompleteSearch />
+
             <Link
-              className="cursor-pointer text-gray-700 hover:text-blue-600 relative"
               href="/cart"
+              className="relative flex items-center justify-center rounded-full p-2 text-foreground transition-colors hover:bg-muted"
+              aria-label={`Shopping cart with ${cartCount} items`}
             >
-              <ShoppingCartIcon className="h-6 w-6" />
+              <ShoppingBag className="h-5 w-5" aria-hidden="true" />
               {cartCount > 0 && (
-                <Badge
-                  variant="default"
-                  className="absolute left-5 -top-1 h-4 w-4 rounded-full p-0 text-[10px] flex items-center justify-center"
-                >
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-medium text-background">
                   {cartCount}
-                </Badge>
+                </span>
               )}
             </Link>
 
-            <section className="cursor-pointer text-gray-700 hover:text-blue-600 max-md:hidden">
-              {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="flex items-center justify-center overflow-hidden rounded-full ring-2 ring-border transition-all hover:ring-foreground focus:outline-none focus:ring-foreground"
+                    aria-label="User menu"
+                  >
                     <Image
                       src={user.image}
-                      alt="user profile"
+                      alt={`${user.firstName || "User"} profile photo`}
                       width={32}
                       height={32}
                       className="rounded-full"
                     />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <Link
-                          href="/profile"
-                          className="block px-2 py-1 text-sm hover:bg-muted"
-                        >
-                          My Account
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <button
-                          onClick={logout}
-                          className="block px-2 py-1 text-sm hover:bg-muted"
-                        >
-                          Log out
-                        </button>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link href="/login">
-                  <User2Icon className="h-6 w-6" />
-                </Link>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="w-full cursor-pointer">
+                        My Account
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={logout}
+                      className="cursor-pointer"
+                    >
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center justify-center rounded-full p-2 text-foreground transition-colors hover:bg-muted"
+                aria-label="Sign in"
+              >
+                <User className="h-5 w-5" aria-hidden="true" />
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="flex items-center gap-3 md:hidden">
+            <Link
+              href="/cart"
+              className="relative flex items-center justify-center rounded-full p-2 text-foreground"
+              aria-label={`Shopping cart with ${cartCount} items`}
+            >
+              <ShoppingBag className="h-5 w-5" aria-hidden="true" />
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-medium text-background">
+                  {cartCount}
+                </span>
               )}
-            </section>
-          </section>
-        </article>
+            </Link>
+          </div>
+        </div>
       </nav>
 
-      {/* MOBILE BOTTOM NAV */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg md:hidden">
-        <div className="grid grid-cols-4 items-center">
+      {/* Mobile Bottom Nav */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-md md:hidden"
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
+        <div className="grid grid-cols-4 items-center py-1">
           <Link
             href="/"
-            className="flex flex-col items-center gap-1 py-3 text-gray-700 hover:text-blue-600"
+            className="flex flex-col items-center gap-0.5 py-2 text-muted-foreground transition-colors hover:text-foreground"
+            aria-label="Home"
           >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-            <span className="text-xs">Home</span>
+            <Home className="h-5 w-5" aria-hidden="true" />
+            <span className="text-[10px] font-medium">Home</span>
           </Link>
 
           <Link
             href="/products"
-            className="flex flex-col items-center gap-1 py-3 text-gray-700 hover:text-blue-600"
+            className="flex flex-col items-center gap-0.5 py-2 text-muted-foreground transition-colors hover:text-foreground"
+            aria-label="Explore products"
           >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-            <span className="text-xs">Explore</span>
+            <Search className="h-5 w-5" aria-hidden="true" />
+            <span className="text-[10px] font-medium">Explore</span>
           </Link>
 
           <Link
             href="/cart"
-            className="flex flex-col items-center gap-1 py-3 text-gray-700 hover:text-blue-600"
+            className="relative flex flex-col items-center gap-0.5 py-2 text-muted-foreground transition-colors hover:text-foreground"
+            aria-label={`Cart with ${cartCount} items`}
           >
-            <ShoppingCartIcon className="h-6 w-6" />
-            <span className="text-xs">Cart</span>
-             {cartCount > 0 && (
-              <Badge
-                variant="default"
-                className="absolute right-30 top-0 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center"
-              >
+            <ShoppingBag className="h-5 w-5" aria-hidden="true" />
+            <span className="text-[10px] font-medium">Cart</span>
+            {cartCount > 0 && (
+              <span className="absolute top-1 right-1/4 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-foreground text-[8px] font-medium text-background">
                 {cartCount}
-              </Badge>
+              </span>
             )}
           </Link>
 
           {user ? (
-            <Sheet open={open} onOpenChange={setOpen}>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <button className="flex flex-col items-center gap-1 py-3 text-gray-700 hover:text-blue-600">
+                <button
+                  className="flex flex-col items-center gap-0.5 py-2 text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Account menu"
+                >
                   <Image
-                      src={user.image}
-                      alt="user profile"
-                      width={24}
-                      height={24}
-                      className="rounded-full"
-                    />
-                  <span className="text-xs">account</span>
+                    src={user.image}
+                    alt={`${user.firstName || "User"} profile`}
+                    width={20}
+                    height={20}
+                    className="rounded-full"
+                  />
+                  <span className="text-[10px] font-medium">Account</span>
                 </button>
               </SheetTrigger>
-
-              <SheetContent side="right" className="w-full sm:w-full p-0">
-                <SheetHeader className="p-4">
-                  <SheetTitle>My Account</SheetTitle>
+              <SheetContent side="bottom" className="rounded-t-2xl">
+                <SheetHeader className="pb-4">
+                  <SheetTitle className="text-left">My Account</SheetTitle>
                 </SheetHeader>
-                <div className="overflow-y-auto h-full">
-                  <Card>
-                    <CardContent>
-                      <ul>
-                        <li>
-                          <Link
-                            href="/profile"
-                            className="block px-2 py-1 text-sm hover:bg-muted"
-                          >
-                            My Account
-                          </Link>
-                        </li>
-                        <li>
-                          <button
-                            onClick={logout}
-                            className="block px-2 py-1 text-sm hover:bg-muted"
-                          >
-                            Log out
-                          </button>
-                        </li>
-                      </ul>
-                    </CardContent>
-                  </Card>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors hover:bg-muted"
+                  >
+                    <User className="h-4 w-4" aria-hidden="true" />
+                    My Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-destructive transition-colors hover:bg-muted"
+                  >
+                    <LogOut className="h-4 w-4" aria-hidden="true" />
+                    Log out
+                  </button>
                 </div>
               </SheetContent>
             </Sheet>
           ) : (
-            <button className="flex flex-col items-center gap-1 py-3 text-gray-700 hover:text-blue-600">
-              <Link href="/login">
-                <User2Icon className="h-6 w-6" />
-              </Link>
-              <span className="text-xs">Account</span>
-            </button>
+            <Link
+              href="/login"
+              className="flex flex-col items-center gap-0.5 py-2 text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Sign in"
+            >
+              <User className="h-5 w-5" aria-hidden="true" />
+              <span className="text-[10px] font-medium">Account</span>
+            </Link>
           )}
         </div>
       </nav>
