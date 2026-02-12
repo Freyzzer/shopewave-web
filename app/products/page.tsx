@@ -4,11 +4,9 @@ import { useState, useEffect, useMemo } from "react";
 import { Loader2, ChevronRight, ChevronLeft } from "lucide-react";
 import ProductCard from "@/components/product-card";
 import { CategoryItem, ProductFiltersState, Products } from "@/types/products";
-
 import { getAllCategories } from "@/lib/services/productServices";
 import { API_URL, ITEMS_PER_PAGE } from "@/constant/constants";
 import { ProductFilters } from "@/components/filter";
-
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Products[]>([]);
@@ -38,46 +36,51 @@ export default function ProductsPage() {
     fetchProducts();
   }, [currentPage]);
 
-const fetchProducts = async () => {
-  setLoading(true);
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+      let endpoint = `${API_URL}?limit=${ITEMS_PER_PAGE}&skip=${skip}`;
 
-  try {
-    const skip = (currentPage - 1) * ITEMS_PER_PAGE;
-    let endpoint = `${API_URL}?limit=${ITEMS_PER_PAGE}&skip=${skip}`;
+      if (filters.categories.length === 1) {
+        endpoint = `${API_URL}/category/${filters.categories[0]}?limit=${ITEMS_PER_PAGE}&skip=${skip}`;
+      }
 
-    if (filters.categories.length === 1) {
-      endpoint = `${API_URL}/category/${filters.categories[0]}?limit=${ITEMS_PER_PAGE}&skip=${skip}`;
+      const res = await fetch(endpoint);
+      const data = await res.json();
+
+      setProducts(data.products);
+      setTotalProducts(data.total ?? data.products.length);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
-
-    const res = await fetch(endpoint);
-    const data = await res.json();
-
-    setProducts(data.products);
-    setTotalProducts(data.total ?? data.products.length);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    const categoriesFilters = filters.categories.map(str => str.toLocaleLowerCase())
-    
+    const categoriesFilters = filters.categories.map((str) =>
+      str.toLocaleLowerCase()
+    );
+
     if (filters.categories.length) {
-      result = result.filter((p) => categoriesFilters.includes(p.category));
+      result = result.filter((p) =>
+        categoriesFilters.includes(p.category)
+      );
     }
-    
+
     result = result.filter(
-      (p) => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
+      (p) =>
+        p.price >= filters.priceRange[0] &&
+        p.price <= filters.priceRange[1]
     );
 
     if (filters.minRating > 0) {
       result = result.filter((p) => p.rating >= filters.minRating);
     }
-    
+
     if (filters.onlyStock) {
       result = result.filter((p) => p.stock > 0);
     }
@@ -97,7 +100,6 @@ const fetchProducts = async () => {
     return result;
   }, [products, filters]);
 
-
   const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
@@ -106,27 +108,50 @@ const fetchProducts = async () => {
   };
 
   return (
-    <div className="min-h-screen bg-white max-lg:flex max-lg:flex-col">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 md:grid-cols-1 lg:grid-cols-4">
-        <ProductFilters
-          categories={categories}
-          value={filters}
-          onChange={setFilters}
-        />
+    <div className="mx-auto max-w-6xl px-4 py-8 lg:px-6">
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+          All Products
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Browse our full collection of {totalProducts} products
+        </p>
+      </div>
 
-        <div className="md:col-span-2 lg:col-span-3">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+        {/* Filters */}
+        <aside className="lg:col-span-1" aria-label="Product filters">
+          <ProductFilters
+            categories={categories}
+            value={filters}
+            onChange={setFilters}
+          />
+        </aside>
+
+        {/* Products Grid */}
+        <div className="lg:col-span-3">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="h-10 w-10 animate-spin" />
+            <div className="flex justify-center py-20" role="status">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" aria-hidden="true" />
+              <span className="sr-only">Loading products...</span>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="py-20 text-center">
-              <div className="text-6xl">🔍</div>
-              <p className="mt-2 text-gray-600">No products found</p>
+            <div className="flex flex-col items-center justify-center py-20">
+              <p className="text-lg font-medium text-foreground">
+                No products found
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Try adjusting your filters
+              </p>
             </div>
           ) : (
             <>
-              <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 ">
+              <ul
+                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                role="list"
+                aria-label="Product list"
+              >
                 {filteredProducts.map((product) => (
                   <li key={product.id}>
                     <ProductCard {...product} />
@@ -135,25 +160,29 @@ const fetchProducts = async () => {
               </ul>
 
               {totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-2">
+                <nav className="mt-10 flex items-center justify-center gap-3" aria-label="Pagination">
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="rounded-lg border p-2 disabled:opacity-50"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-border transition-colors hover:bg-muted disabled:opacity-40"
+                    aria-label="Previous page"
                   >
-                    <ChevronLeft className="h-5 w-5" />
+                    <ChevronLeft className="h-4 w-4" aria-hidden="true" />
                   </button>
 
-                  <span className="text-sm">Page {currentPage} of {totalPages}</span>
+                  <span className="text-sm text-muted-foreground" aria-live="polite">
+                    Page {currentPage} of {totalPages}
+                  </span>
 
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="rounded-lg border p-2 disabled:opacity-50"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-border transition-colors hover:bg-muted disabled:opacity-40"
+                    aria-label="Next page"
                   >
-                    <ChevronRight className="h-5 w-5" />
+                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
                   </button>
-                </div>
+                </nav>
               )}
             </>
           )}

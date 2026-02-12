@@ -1,34 +1,36 @@
-import {ButtonLink} from "@/components/button-link";
-
 import SectionProduct from "@/components/section-product";
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-export default  function Home() {
-
+export default function Home() {
   return (
     <>
-      <header className="w-full h-[300px] md:mb-8 bg-[#93B7BE]" id="background">
-        <div className="flex items-center justify-between ">
-          <section className=" group text-4xl font-bold text-[#494049]">
-            <h2 className="">Grab Up to 50% off on</h2>
-            <h2 className="">Select Product</h2>
-            <ButtonLink title="Shop Now" />
-          </section>
-          <Image
-            src="/ilustra_shop.svg"
-            alt="Hero Banner"
-            width={300}
-            height={300}
-            priority
-            className="object-contain max-sm:hidden"
-          />
+      {/* Hero Section */}
+      <header className="border-b border-border bg-card">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-center px-4 py-16 md:py-24 lg:px-6">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Limited Time Offer
+          </p>
+          <h1 className="max-w-lg text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl text-balance">
+            Up to 50% off on select products
+          </h1>
+          <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
+            Discover quality products at unbeatable prices. Free shipping on orders over $500.
+          </p>
+          <Link
+            href="/products"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            Shop Now
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </header>
-      <main className="w-full">
-        <div className="w-full max-lg:px-6 max-md:px-4">
-          <SectionProduct />
-        </div>
-      </main>
+
+      {/* Product Sections */}
+      <div className="mx-auto max-w-6xl px-4 py-12 md:py-16 lg:px-6">
+        <SectionProduct />
+      </div>
     </>
   );
 }
