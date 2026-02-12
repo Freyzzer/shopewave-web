@@ -44,7 +44,7 @@ export function ProductFilters({
   };
 
   const FiltersContent = (
-    <div className="flex flex-col gap-6" role="group" aria-label="Product filters">
+    <div className="flex flex-col gap-8" role="group" aria-label="Product filters">
       {/* Categories */}
       <fieldset>
         <legend className="mb-2 text-sm font-medium text-foreground">
@@ -190,8 +190,8 @@ export function ProductFilters({
       </div>
 
       {/* Desktop */}
-      <div className="hidden rounded-lg border border-border bg-card p-5 lg:block">
-        <h3 className="mb-5 text-sm font-semibold text-foreground">
+      <div className="hidden rounded-xl border border-border bg-card p-6 lg:block">
+        <h3 className="mb-6 text-sm font-semibold text-foreground">
           Filters
         </h3>
         {FiltersContent}

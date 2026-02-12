@@ -39,7 +39,7 @@ export default function ProductCard(product: Products) {
 
   return (
     <article
-      className="group flex w-44 shrink-0 cursor-pointer flex-col sm:w-48 md:w-52"
+      className="group flex w-full cursor-pointer flex-col"
       aria-label={`${product.title} - $${showDiscount ? discountedPrice : product.price}`}
     >
       {/* Image */}
