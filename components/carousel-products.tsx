@@ -81,15 +81,7 @@ export default function ProductCarousel({ products, title }: ProductCarouselProp
           onScroll={checkScrollButtons}
           className="flex overflow-x-auto scrollbar-hide gap-10 pb-4 scroll-smooth"
         >
-          <style jsx>{`
-            .scrollbar-hide::-webkit-scrollbar {
-              display: none;
-            }
-            .scrollbar-hide {
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-            }
-          `}</style>
+
           {products.map((product: Products) => (
             <li key={product.id} className="shrink-0">
               <ProductCard {...product} />

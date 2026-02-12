@@ -19,6 +19,7 @@ export default  function Home() {
             alt="Hero Banner"
             width={300}
             height={300}
+            priority
             className="object-contain max-sm:hidden"
           />
         </div>
