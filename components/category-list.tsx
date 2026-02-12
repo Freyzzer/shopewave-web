@@ -54,7 +54,6 @@ export default function CategoryList() {
           Shop by Category
         </h2>   
         
-        {/* Scrollable container */}
         <div 
           ref={scrollRef}
           onMouseDown={handleMouseDown}
@@ -78,12 +77,10 @@ export default function CategoryList() {
                 key={category.id}
                 className="group flex flex-col items-center gap-2 transition-transform hover:scale-105"
               >
-                {/* Circle with emoji */}
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-gray-100 to-gray-200 text-3xl shadow-sm transition-shadow group-hover:shadow-md">
                   {category.emoji}
                 </div>
                 
-                {/* Category name */}
                 <span className="text-center text-xs font-medium text-gray-700 group-hover:text-blue-600">
                   {category.name}
                 </span>
